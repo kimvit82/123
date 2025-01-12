@@ -1,0 +1,92 @@
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 50%;
+        max-width: 600px;
+        text-align: center;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        margin-top: -10px;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    label {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 8px;
+        text-align: left;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+
+    textarea {
+        height: 100px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 25px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    #openModal {
+        margin-top: 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
