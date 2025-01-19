@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История поиска</title>
+</head>
+<body>
+    <h1>История поиска</h1>
+    {% if history %}
+        <ul>
+            {% for item in history %}
+                <li>{{ item.city_name }} - {{ item.timestamp }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>История пуста.</p>
+    {% endif %}
+    <a href="/">Назад</a>
+    <a href="{{ url_for('clear_history') }}">Очистить историю</a>
+</body>
+</html>

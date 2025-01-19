@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз погоды</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .weather-info {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .history-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .history-section h2 {
+            margin-top: 0;
+        }
+
+        .history-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .history-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .history-section a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .history-section a:hover {
+            text-decoration: underline;
+        }
+
+        .clear-history {
+            background-color: #ff6f61;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .clear-history:hover {
+            background-color: #e05a4f;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 50%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Прогноз погоды</h1>
+
+        <form method="POST">
+            <input type="text" name="city" placeholder="Введите название города" required>
+            <button type="submit">Показать погоду</button>
+        </form>
+
+        {% if error %}
+            <p style="color:red; text-align: center;">{{ error }}</p>
+        {% endif %}
+
+        {% if weather %}
+        <div class="weather-info">
+            <h2>Погода в {{ city }}</h2>
+            <p><strong>Температура:</strong> {{ weather['current']['temp_c'] }}°C</p>
+            <p><strong>Описание:</strong> {{ weather['current']['condition']['text'] }}</p>
+            <p><strong>Ветер:</strong> {{ weather['current']['wind_kph'] }} км/ч</p>
+            <p><strong>Влажность:</strong> {{ weather['current']['humidity'] }}%</p>
+        </div>
+        {% endif %}
+
+        <div class="history-section">
+            <h2>История запросов:</h2>
+            {% if history %}
+                <ul>
+                    {% for item in history %}
+                        <li>
+                            <a href="javascript:void(0);" onclick="getCityWeather('{{ item.city_name }}')">{{ item.city_name }}</a>
+                            <span>{{ item.timestamp }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <form action="{{ url_for('clear_history') }}" method="GET">
+                    <button type="submit" class="clear-history">Очистить историю</button>
+                </form>
+            {% else %}
+                <p>История поиска пуста.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function getCityWeather(cityName) {
+            fetch(`/weather/${cityName}`)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherInfo = document.querySelector('.weather-info');
+                    weatherInfo.innerHTML = `
+                        <h2>Погода в ${cityName}</h2>
+                        <p><strong>Температура:</strong> ${data.current.temp_c}°C</p>
+                        <p><strong>Описание:</strong> ${data.current.condition.text}</p>
+                        <p><strong>Ветер:</strong> ${data.current.wind_kph} км/ч</p>
+                        <p><strong>Влажность:</strong> ${data.current.humidity}%</p>
+                    `;
+                })
+                .catch(error => console.log(error));
+        }
+    </script>
+
+</body>
+</html>
